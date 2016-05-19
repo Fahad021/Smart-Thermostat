@@ -1,0 +1,53 @@
+t = [0:24];
+x_1 = [43, 43, 42, 42, 42, 41, 41, 41, 41, 44, 47, 49, 51, 53, 54, 54, 54, 53, 50, 49, 47, 46, 45, 44 ,43];
+[p, a]  = polyfit(t, x_1, 6);
+y_1 = polyval (p, t);
+x_2 = [49, 48, 48, 47, 47, 46, 46, 45, 48, 51,55, 57, 59, 61, 62, 63, 62, 61, 59, 57, 55, 53, 52, 51, 49];
+[p, a]  = polyfit(t, x_2, 6);
+y_2 = polyval (p, t);
+x_3 = [54, 52, 51, 50, 49, 49, 48, 50, 54, 58, 61, 64, 66, 67, 69, 69, 69, 68, 66, 63, 61, 59, 57, 55, 54];
+[p, a]  = polyfit(t, x_3, 6);
+y_3 = polyval (p, t);
+x_4 = [60, 58, 57, 56, 55, 54, 54, 58, 62, 66, 69, 71, 74, 76, 77, 78, 78, 77, 75, 71, 69, 66, 64, 62, 60];
+[p, a]  = polyfit(t, x_4, 6);
+y_4 = polyval (p, t);
+x_5 = [67, 65, 64, 62, 61, 60, 62, 65, 69, 72, 76, 79, 81, 83, 85, 86, 86, 86, 84, 81, 77, 75, 72, 69, 67];
+[p, a]  = polyfit(t, x_5, 6);
+y_5 = polyval (p, t);
+x_6 = [74, 72, 70, 69, 67, 66, 68, 71, 76, 80,83, 86, 90, 92, 94, 95, 95, 95, 93, 90, 86, 83, 80, 77, 74];
+[p, a]  = polyfit(t, x_6, 6);
+y_6 = polyval (p, t);
+
+plot(t, y_1, 'linewidth', 1.8);
+grid on;
+title('Weather data collected from 1981 to 2010 at Yosemite, CA');
+xlabel('Time of the day (hours)');
+ylabel('Monthly averaged outside temperature');
+hold on;
+plot(t, y_2, 'linewidth', 1.8);
+hold on;
+plot(t, y_3, 'linewidth', 1.8);
+hold on;
+plot(t, y_4, 'linewidth', 1.8);
+hold on;
+plot(t, y_5, 'linewidth', 1.8);
+hold on;
+plot(t, y_6, 'linewidth', 1.8);
+hold on;
+
+legend('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun');
+axis([0,24,30,100]);
+
+
+plot(t, x_1, '*', 'markersize', 8);
+grid on;
+plot(t, x_2, '*', 'markersize', 8);
+grid on;
+plot(t, x_3, '*', 'markersize', 8);
+grid on;
+plot(t, x_4, '*', 'markersize', 8);
+grid on;
+plot(t, x_5, '*', 'markersize', 8);
+grid on;
+plot(t, x_6, '*', 'markersize', 8);
+grid on;

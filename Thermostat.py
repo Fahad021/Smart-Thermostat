@@ -87,21 +87,19 @@ class Thermostat(object):
         return self.a
         
 
-    def cal_cost(self, T_ini_now, X_tar_now, now):       
+    def cal_cost(self, T_ini_now, X_tar_now, now):
         """
         now is the time from 1 to 24 which determines the electricity price
         """
         if now >= 24:
             now %= 24
-        cost = -self.p_t[now] * self.k1 * abs(T_ini_now - X_tar_now)
-        return cost
+        return -self.p_t[now] * self.k1 * abs(T_ini_now - X_tar_now)
 
     def cal_temp(self, T_out_prev, X_tar_prev, t = 1):
         """
         Calculate the temperature in current period
         """
-        T_ini_now = T_out_prev + (X_tar_prev - T_out_prev) * exp(-(self.k2 / self.k1) * t)
-        return T_ini_now
+        return T_out_prev + (X_tar_prev - T_out_prev) * exp(-(self.k2 / self.k1) * t)
         
     def cal_utility_rigid(self, T_out_prev, X_tar_prev, X_tar_now, now):
         """
@@ -110,8 +108,13 @@ class Thermostat(object):
         """
         if now >= 24:
             now %= 24
-        utility = -self.p_t[now] * self.k1 * abs(T_out_prev + (X_tar_prev - T_out_prev) *  exp(-k2 / k1) - X_tar_now)
-        return utility
+        return (
+            -self.p_t[now]
+            * self.k1
+            * abs(
+                T_out_prev + (X_tar_prev - T_out_prev) * exp(-k2 / k1) - X_tar_now
+            )
+        )
 
 #Traditional model
     def cal_traditional(self, tar_temp, error):
@@ -141,8 +144,9 @@ class Thermostat(object):
     max_utility = -float("inf")
     def cal_rigid(self, range_temp, future_time):
         if len(self.daily_temp) < 24 + future_time:
-            print("Please input at least " + str(24 + future_time)+ \
-                  " temperature data for calculting rigid model cost!")
+            print(
+                f"Please input at least {str(24 + future_time)} temperature data for calculting rigid model cost!"
+            )
             return
         #initial indoor temperature
         T_inside_temp = [self.daily_temp[0]]
@@ -152,8 +156,7 @@ class Thermostat(object):
             X_tar_previous = range_temp[0]
         else:
             X_tar_previous = (range_temp[0] + range_temp[1]) // 2
-        temp_set = []
-        temp_set.append(X_tar_previous)
+        temp_set = [X_tar_previous]
         temp_now = self.cal_temp(self.daily_temp[0], X_tar_previous)
         T_inside_temp = [temp_now]
         X_tar_now = None
@@ -193,8 +196,9 @@ class Thermostat(object):
 #Optimizing model
     def cal_opti(self, range_temp, future_time):
         if len(self.daily_temp) < 24 + future_time:
-            print("Please input at least " + str(24 + future_time)+ \
-                  " temperature data for calculting rigid model cost!")
+            print(
+                f"Please input at least {str(24 + future_time)} temperature data for calculting rigid model cost!"
+            )
             return
         #initial indoor temperature
         T_inside_temp = [self.daily_temp[0]]
@@ -204,8 +208,7 @@ class Thermostat(object):
             X_tar_previous = range_temp[0]
         else:
             X_tar_previous = (range_temp[0] + range_temp[1]) // 2
-        temp_set = []
-        temp_set.append(X_tar_previous)
+        temp_set = [X_tar_previous]
         temp_now = self.cal_temp(self.daily_temp[0], X_tar_previous)
         T_inside_temp = [temp_now]
         X_tar_now = None
@@ -253,7 +256,7 @@ class Thermostat(object):
 
 #Calculate the uncomfortableness at certain time
     def cal_comf(self, T_inside_now, T_pfr):
-        res = self.a * ((T_inside_now - T_pfr) ** 2) \
-              + self.b * abs(T_inside_now - T_pfr)
-        return res
+        return self.a * ((T_inside_now - T_pfr) ** 2) + self.b * abs(
+            T_inside_now - T_pfr
+        )
 
